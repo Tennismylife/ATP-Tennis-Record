@@ -29,8 +29,8 @@ public class Bagel {
 
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
-		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
-		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
+		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
 
 		listLoser = new ArrayList<String>();
