@@ -25,7 +25,7 @@ public class TournamentPlayed {
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
 		//Load all Database into List
-		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
+		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
 
 		long startTime = System.currentTimeMillis();
@@ -57,7 +57,6 @@ public class TournamentPlayed {
 			if (!listPlayer.contains(winner)) {
 				played[i] = new Played();
 				played[i].setPlayer(winner);
-				played[i].setIndex(i);
 				listPlayed.add(played[i]);
 				listPlayer.add(winner);
 			}
@@ -66,19 +65,25 @@ public class TournamentPlayed {
 			if (!listPlayer.contains(loser)) {
 				played[i] = new Played();
 				played[i].setPlayer(loser);
-				played[i].setIndex(i);
 				listPlayed.add(played[i]);
 				listPlayer.add(loser);
 			}
 			i++;
 		}
 		
+		
+		
 		for (Iterator<Played> iter2 = listPlayed.listIterator(); iter2.hasNext();)
 		{
 			currentPlayer = iter2.next();
 			listTournament = new ArrayList<String>();
-
-			for (Iterator<String> iter3 = line1.listIterator(currentPlayer.getIndex()); iter3.hasNext();) {
+			System.out.println(currentPlayer);
+			line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+			line1.removeIf(s -> !s.contains(currentPlayer.getPlayer()));
+			line1.removeIf(s -> !s.contains(",F,"));
+			line1.removeIf(s -> !s.contains(",SF,"));
+			
+			for (Iterator<String> iter3 = line1.listIterator(); iter3.hasNext();) {
 				arrayString = iter3.next().split(",");
 				String currentTournament = arrayString[1] + arrayString[5];
 
@@ -110,16 +115,7 @@ class Played {
 
 	String player;
 	int playedTournaments;
-	int index;
-
-	public int getIndex() {
-		return index;
-	}
-
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
+	
 	public String getPlayer() {
 		return player;
 	}
