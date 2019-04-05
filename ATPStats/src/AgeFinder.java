@@ -29,7 +29,7 @@ public class AgeFinder {
 
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
-		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
+		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
 
 		listPlayer = new ArrayList<String>();
@@ -44,36 +44,34 @@ public class AgeFinder {
 			tournament = arrayString[1];
 			date = arrayString[5];
 
-			if (tournament.contains("Carlo")) 
-			{
-				
+			if (tournament.contains("Carlo")) {
+
 				winner = arrayString[10];
 				ageWinner = arrayString[14];
-				if(ageWinner.length() > 4)
-			    ageWinner = ageWinner.substring(0,5).replace(".", ",");
-				
+				if (ageWinner.length() > 4)
+					ageWinner = ageWinner.substring(0, 5).replace(".", ",");
+
 				loser = arrayString[20];
 				ageLoser = arrayString[24];
-				if(ageLoser.length() > 4)
-			    ageLoser = ageLoser.substring(0,5).replace(".", ",");
-				
-				year = "$" +processDate(date);
-				if (!listPlayer.contains(winner + year +"$" +ageWinner))
-					listPlayer.add(winner + year +"$" +ageWinner);
-				if (!listPlayer.contains(loser + year +"$" +ageLoser))
-					listPlayer.add(loser + year +"$" +ageLoser);
+				if (ageLoser.length() > 4)
+					ageLoser = ageLoser.substring(0, 5).replace(".", ",");
+
+				year = "$" + processDate(date);
+				if (!listPlayer.contains(winner + year + "$" + ageWinner))
+					listPlayer.add(winner + year + "$" + ageWinner);
+				if (!listPlayer.contains(loser + year + "$" + ageLoser))
+					listPlayer.add(loser + year + "$" + ageLoser);
 			}
 
-			}
-		
-		
+		}
+
 		for (Iterator<String> iter = listPlayer.iterator(); iter.hasNext();) {
-			w.write(iter.next() +"\n");
+			w.write(iter.next() + "\n");
 			w.flush();
-			
+
 		}
-		}
-	
+	}
+
 	private static String processDate(String data) {
 		year = data.substring(0, 4);
 		mouth = data.substring(4, 6);
