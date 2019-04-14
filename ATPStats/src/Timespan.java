@@ -6,9 +6,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
@@ -24,7 +29,7 @@ public class Timespan {
 	private static String[] arrayString;
 	private static String currentH2H;
 	private static String H2H;
-	private static String currentWrite;
+	private static String currentWrite="";
 	private static String currentH2H2;
 	private static String H2H2;
 	private static String year;
@@ -38,19 +43,81 @@ public class Timespan {
 	private static String currentDate;
 	private static String currentRound;
 	private static String round;
+	private static Set<String> winners;
 
 
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
-		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
-		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
+		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+		line1.removeIf(s -> s.contains("Davis Cup"));
+		line2.removeIf(s -> s.contains("Davis Cup"));
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
 		
-		listWinner = new ArrayList<String>();
+		winners = new TreeSet<String>();
 
 		//searchH2H();
-		search2Masters();
+		//search2Masters();
+		search2Wins();
 
+	}
+	
+	
+	//Script to search che biggest timespan between 2 wins
+	private static void search2Wins() throws IOException {
+		
+		for (Iterator<String> iter = line1.iterator(); iter.hasNext();) 
+		{
+			arrayString = iter.next().split(",");
+			currentRound = arrayString[29];
+			if(currentRound.equals("F")) {
+			currentWinner = arrayString[10];
+			winners.add(currentWinner);
+			}
+		}
+			
+	
+		for (Iterator<String> iter1 = winners.iterator(); iter1.hasNext();)
+		{
+			currentWinner = iter1.next();
+			currentDate = arrayString[5];
+			currentTournament = arrayString[1];
+					
+			System.out.println(currentWinner);
+			
+			LocalDate currentDat = LocalDate.of(Integer.parseInt(currentDate.substring(0,4)), Integer.parseInt(currentDate.substring(4,6)), Integer.parseInt(currentDate.substring(6,8)));
+			
+			line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+			line2.removeIf(s -> !s.contains(currentWinner));
+			line2.removeIf(s -> s.contains("Davis Cup"));
+			for (Iterator<String> iter2 = line2.listIterator(); iter2.hasNext();) 
+			{
+				arrayString2 = iter2.next().split(",");
+				winner = arrayString2[10];
+				round =  arrayString2[29];
+				
+				if(currentWinner.equals(winner) && round.equals("F")) 
+			    {
+				tournament = arrayString2[1];
+				currentDate = arrayString2[5];
+				date = arrayString2[5];
+				LocalDate dat = LocalDate.of(Integer.parseInt(date.substring(0,4)), Integer.parseInt(date.substring(4,6)), Integer.parseInt(date.substring(6,8)));
+				long days = ChronoUnit.DAYS.between(currentDat, dat);
+				
+				tournament = arrayString2[1];
+
+				if(days > 1350) {
+				currentWrite = currentWinner +", " + currentTournament +", " + processDate((currentDat.toString()).replace("-", "")) +", " +tournament +", " +processDate(date) +"," +days;
+				w.write(currentWrite + "\n");
+				w.flush();
+				}
+
+				currentDat = dat;
+				currentTournament = tournament;
+			    }
+			
+			}
+		}
 	}
 
 	//Script to search che biggest timespan between 1st and last Masters 1000 title
@@ -63,7 +130,6 @@ public class Timespan {
 			currentWinner = arrayString[10];
 			currentTournament = arrayString[1];
 			currentDate = processDate(arrayString[5]);
-			currentRound =  arrayString[29];
 			
 			System.out.println(iter.next());
 			
