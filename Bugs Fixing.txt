@@ -1,0 +1,20 @@
+<<<<<<<<<<<<<<<<<<<<<<<<<<<Only 1 challenger>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1972,19721120,Buenos Aires,1972_303,Clay,Outdoor,,32,R32,M152,,,26.431211,COL,Ivan Molina,L,7-5 6-1 7-5,M156,,,,,,,,,,,,,,,,,,,,,,,,,
+1973,19731119,Buenos Aires,1973_303,Clay,Outdoor,$35000,32,R32,C088,,,29.453799,CHI,Patricio Cornejo,R,6-2 6-3,D026,,,,,,,,,,,,,,,,,,,,,,,,,
+1975,19751006,Madrid,1975_309,Clay,Outdoor,$75000,64,R32,F024,,24,29.341547,CHI,Jaime Fillol Sr.,R,7-5 6-3,G076,,,,,,,,,,,,,,,,,,,,,,,,,
+1977,19770215,Ocean City,1977_2019,Carpet,Indoor,$100000,16,R16,T040,,,37.774127,ROU,Ion Tiriac,R,W/O,G008,,,,,,,,,,,,,,,,,,,,,,,,,
+1978,19780710,Forest Hills WCT,1978_415,Clay,Outdoor,$300000,16,RR,G008,,3,23.956194,USA,Vitas Gerulaitis,R,6-4 1-6 7-5,M138,,,,,,,,,,,,,,,,,,,,,,,,,
+1978,19780710,Forest Hills WCT,1978_415,Clay,Outdoor,$300000,16,RR,D074,,19,28.399726,AUS,Phil Dent,R,6-4 0-6 6-2,M138,,,,,,,,,,,,,,,,,,,,,,,,,
+1979,19790709,Forest Hills WCT,1979_415,Clay,Outdoor,$300000,16,SF,D026,,7,28.372348,USA,Eddie Dibbs,R,7-6 6-0,S065,,,,,,,,,,,,,,,,,,,,,,,,,
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<Missing a data in col 41<<<<<<<<<<<<<<<<<<<<<<<<<<<
+1991,19910408,Tokyo Outdoor,1991_329,Hard,Outdoor,$1000000,56,F,E004,1,1,25.215606,SWE,Stefan Edberg,R,6-1 7-5 6-0,L018,2,3,31.085558,USA,Ivan Lendl,R,1,1,81,53,39,13,13,6,8,4,2,76,43,22,11,12,,2,117
+2016,20160804,Rio de Janeiro Olympic Games,2016_96,Hard,Outdoor,,64,R64,SC73,,94,32.495551,BRA,Rogerio Dutra Silva,R,7-6(4) 6-1,F586,,113,27.192334,ITA,Thomas Fabbiano,R,6,1,57,32,24,18,0,,0,2,3,57,40,26,8,0,,0,82
+2016,20160804,Rio de Janeiro Olympic Games,2016_96,Hard,Outdoor,,64,R64,SD32,15,31,31.603012,FRA,Gilles Simon,R,6-4 7-6(1),CG80,,51,19.720739,CRO,Borna Coric,R,2,5,88,50,39,33,0,,0,3,4,79,51,37,24,0,,0,129
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<There is a "T" on ranking<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2003,20030224,Copenhagen,2003_481,Hard,Indoor,$380000,32,R32,L206,Q,184,32.919918,SWE,Magnus Larsson,R,6-1 6-1,N390,WC,1020T,19.496235,,Frederik Nielsen,R,4,1,40,32,25,3,7,2,3,2,0,41,22,8,6,7,5,11,40
+2017,20170612,s-Hertogenbosch,2017_440,Grass,Outdoor,€660375,28,Q1,PD07,2,83,26.970568,CAN,Vasek Pospisil,R,6-7(9) 6-1 6-3,MB88,WC,1183T,33.774127,,Matwe Middelkoop,R,15,6,93,51,43,25,14,4,4,1,4,92,53,41,18,14,1,5,126
+
+
+
