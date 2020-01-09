@@ -26,6 +26,9 @@ public class Bagel {
 	private static String score;
 	private static String currentWinner;
 	private static int bagel;
+	private static String currentCategory;
+	private static String plot;
+	private static String category;
 
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
@@ -70,32 +73,39 @@ public class Bagel {
 	}
 
 	private static void winner() throws IOException, RowsExceededException, WriteException, ParseException {
-		int i = 0;
+		//int i = 0;
 
 		for (Iterator<String> iter = line1.iterator(); iter.hasNext();) {
-			arrayString = iter.next().split(",");
+			plot = iter.next();
+			arrayString = plot.split(",");
 			currentWinner = arrayString[10];
-			System.out.println(iter.next());
+			currentCategory = arrayString[4];
+			System.out.println(plot);
+			
+			if (!listWinner.contains(currentWinner) && currentCategory.equals("G")) {
 
-			if (!listWinner.contains(currentWinner)) {
 				listWinner.add(currentWinner);
 
-				for (Iterator<String> iter2 = line2.listIterator(i); iter2.hasNext();) {
+				for (Iterator<String> iter2 = line2.listIterator(); iter2.hasNext();) {
 					arrayString2 = iter2.next().split(",");
 
 					winner = arrayString2[10];
 					loser = arrayString2[20];
 					score = arrayString2[27];
+					category = arrayString2[4];
 
-					if ((winner.contains(currentWinner) && score.contains("6-0"))) {
-						bagel = countString(score, "6-0");
-						counter = counter + bagel;
+					if (category.equals("G")) {
+						if ((winner.contains(currentWinner) && score.contains("6-0"))) {
+							bagel = countString(score, "6-0");
+							counter = counter + bagel;
+						}
+
+						if (score.contains("0-6") && loser.contains(currentWinner)) {
+							bagel = countString(score, "0-6");
+							counter = counter + bagel;
+						}
 					}
 
-					if (score.contains("0-6") && loser.contains(currentWinner)) {
-						bagel = countString(score, "0-6");
-						counter = counter + bagel;
-					}
 				}
 
 				w.write(currentWinner + "," + counter + "\n");
@@ -103,7 +113,6 @@ public class Bagel {
 				counter = 0;
 			}
 
-			i++;
 		}
 	}
 

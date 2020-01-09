@@ -30,7 +30,7 @@ public class TournamentPlayed {
 
 		//Load all Database into List
 		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
-		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
+		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "UTF-8"));
 
 		long startTime = System.currentTimeMillis();
 		listPlayer = new ArrayList<String>();
@@ -59,8 +59,9 @@ public class TournamentPlayed {
 			String winner = arrayString[10];
 			String category = arrayString[4];
 			String round = arrayString[29];
+			String surface = arrayString[2];
 			
-			if (!listPlayer.contains(winner) && category.equals(categoryToSearch) && round.equals("R16"))
+			if (!listPlayer.contains(winner) && category.equals("M") && round.contains("SF"))
 			{
 				played[i] = new Played();
 				played[i].setPlayer(winner);
@@ -90,8 +91,6 @@ public class TournamentPlayed {
 			line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 			line1.removeIf(s -> !s.contains(currentPlayer.getPlayer()));
 			line1.removeIf(s -> s.contains("Davis Cup"));
-			line1.removeIf(s -> s.contains(",F,"));
-			line1.removeIf(s -> s.contains(",SF,"));
 			
 			for (Iterator<String> iter3 = line1.listIterator(); iter3.hasNext();) 
 			{
@@ -105,20 +104,20 @@ public class TournamentPlayed {
 					String currentYear = processDate(arrayString[5]);
                     String surface = arrayString[2];
                     String round = arrayString[29];
-					
-					if (category.equals("M") && round.equals("QF")) 
-					{
-						//System.out.println(currentTournament);
+                    String ageWinner = arrayString[14];
+                    String score = arrayString[27];
+                    
+                    if (!listTournament.contains(currentTournament) && !listYear.contains(currentYear) && category.equals("M") && round.equals("F"))
+                    	{
 						if (currentPlayer.getPlayer().equals(winner) || currentPlayer.getPlayer().equals(loser)) 
 						{
-							
-							//System.out.println(currentPlayer);
 							currentPlayer.setPlayedTournaments(currentPlayer.getPlayedTournaments() + 1);
-							//listTournament.add(currentTournament);
-							//listYear.add(currentYear);
+							listTournament.add(currentTournament);
+							listYear.add(currentYear);
 						}
+					
 					}
-				
+                    
 			}
 			i++;
 		}

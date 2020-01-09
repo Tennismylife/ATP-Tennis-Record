@@ -30,11 +30,15 @@ public class TournamentPlayedOnSurface {
 	private static String nameTournament;
 	private static String currentWinner;
 	private static String currentLoser;
+	private static String playedTournaments;
+	private static String year;
+	private static String ageWinner;
+	private static String onlyNameTournament;
 
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
-		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
-		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("Unicode"));
+		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
 
 		listPlayer = new ArrayList<String>();
@@ -50,8 +54,10 @@ public class TournamentPlayedOnSurface {
 		{
 			arrayString = iter.next().split(",");
 			nameTournament = arrayString[1];
+			currentSurface = arrayString[2];
 			
-			if(!nameTournament.contains("Davis Cup"))
+			
+			if(!nameTournament.contains("Davis Cup") && currentSurface.equals("Clay"))
 			{
 		
 		    //Get the players list
@@ -65,22 +71,26 @@ public class TournamentPlayedOnSurface {
 					{
 						arrayString2 = iter2.next().split(",");
 
-						currentTournament = arrayString2[1] + arrayString2[5];
-						//surface = arrayString2[2];
+						currentTournament = arrayString2[1] +"," +processDate(arrayString2[5]);
+						onlyNameTournament = arrayString2[1];
+				        surface = arrayString2[2];
 						winner = arrayString2[10];
-						loser = arrayString2[20];
+						ageWinner = arrayString2[14];
+						//loser = arrayString2[20];
 
-						if (!listTournament.contains(currentTournament)) 
+						if (!listTournament.contains(onlyNameTournament) && surface.equals("Clay") && !currentTournament.contains("Davis Cup")) 
 						{
-							if (currentPlayer.equals(winner) || currentPlayer.equals(loser)) {
-								listTournament.add(currentTournament);
-								counter++;
+							if (currentPlayer.equals(winner)) {
+								listTournament.add(onlyNameTournament);
+								w.write(currentPlayer +"," +currentTournament +"," +ageWinner+"\n");
+								w.flush();
+								
+								//counter++;
 							}
 						}
 					}
 
-					w.write(currentPlayer + "," + counter + "\n");
-					w.flush();
+					
 					counter = 0;
 					listPlayer.add(currentPlayer);
 
@@ -105,6 +115,12 @@ public class TournamentPlayedOnSurface {
 			}
 		}
 		return count;
+	}
+	
+	private static String processDate(String data) {
+		year = data.substring(0, 4);
+
+		return year;
 	}
 
 }

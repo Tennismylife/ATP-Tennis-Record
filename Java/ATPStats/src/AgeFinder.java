@@ -9,8 +9,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 
 public class AgeFinder {
 	private static ArrayList<String> listPlayer;
@@ -27,7 +25,7 @@ public class AgeFinder {
 	private static String ageLoser;
 	private static String loser;
 
-	public static void main(String[] args) throws IOException, WriteException, ParseException {
+	public static void main(String[] args) throws IOException, ParseException {
 
 		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
@@ -38,13 +36,13 @@ public class AgeFinder {
 
 	}
 
-	private static void search() throws IOException, RowsExceededException, WriteException, ParseException {
+	private static void search() throws IOException, ParseException {
 		for (Iterator<String> iter = line1.iterator(); iter.hasNext();) {
 			arrayString = iter.next().split(",");
 			tournament = arrayString[1];
 			date = arrayString[5];
 
-			if (tournament.contains("Carlo")) {
+			if (tournament.contains("Shanghai Masters")) {
 
 				winner = arrayString[10];
 				ageWinner = arrayString[14];
@@ -53,12 +51,15 @@ public class AgeFinder {
 
 				loser = arrayString[20];
 				ageLoser = arrayString[24];
+				
 				if (ageLoser.length() > 4)
 					ageLoser = ageLoser.substring(0, 5).replace(".", ",");
 
 				year = "$" + processDate(date);
+				
 				if (!listPlayer.contains(winner + year + "$" + ageWinner))
 					listPlayer.add(winner + year + "$" + ageWinner);
+				
 				if (!listPlayer.contains(loser + year + "$" + ageLoser))
 					listPlayer.add(loser + year + "$" + ageLoser);
 			}

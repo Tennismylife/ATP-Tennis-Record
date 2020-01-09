@@ -44,21 +44,36 @@ public class Timespan {
 	private static String currentRound;
 	private static String round;
 	private static Set<String> winners;
+	private static String category;
+	private static String currentCategory;
+	private static String plot;
+	private static String currentLoser;
+	private static String loser;
+	private static String currentWinnerId;
+	private static String currentLoserId;
+	private static String winnerId;
+	private static String LoserId;
+	private static String loserId;
 
 
 	public static void main(String[] args) throws IOException, WriteException, ParseException {
 
 		line1 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
 		line2 = Files.readAllLines(Paths.get("newdb.txt"), Charset.forName("UTF-8"));
+		
+		
 		line1.removeIf(s -> s.contains("Davis Cup"));
 		line2.removeIf(s -> s.contains("Davis Cup"));
+		line1.removeIf(s -> s.contains("Fed Cup"));
+		line2.removeIf(s -> s.contains("Fed Cup"));
+		
 		w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Output.txt"), "Unicode"));
 		
 		winners = new TreeSet<String>();
-
+        listWinner = new ArrayList<String>();
 		//searchH2H();
-		//search2Masters();
-		search2Wins();
+		search2Masters();
+	     //search2Wins();
 
 	}
 	
@@ -70,10 +85,13 @@ public class Timespan {
 		{
 			arrayString = iter.next().split(",");
 			currentRound = arrayString[29];
-			if(currentRound.equals("F")) {
+			category = arrayString[4];
+			tournament = arrayString[1];
+			if(tournament.contains("Wimbledon")) {
 			currentWinner = arrayString[10];
 			winners.add(currentWinner);
 			}
+			
 		}
 			
 	
@@ -95,8 +113,10 @@ public class Timespan {
 				arrayString2 = iter2.next().split(",");
 				winner = arrayString2[10];
 				round =  arrayString2[29];
+				tournament = arrayString2[1];
+				category = arrayString2[4];
 				
-				if(currentWinner.equals(winner) && round.equals("F")) 
+				if(currentWinner.equals(winner) && round.equals("R128") && tournament.contains("Wimbledon")) 
 			    {
 				tournament = arrayString2[1];
 				currentDate = arrayString2[5];
@@ -120,63 +140,92 @@ public class Timespan {
 		}
 	}
 
-	//Script to search che biggest timespan between 1st and last Masters 1000 title
+	//Script to search the biggest timespan between 1st and last Round on a tournament or categories
 	private static void search2Masters() throws IOException {
         int i = 0;
+
 		
 		for (Iterator<String> iter = line1.iterator(); iter.hasNext();) 
 		{
-			arrayString = iter.next().split(",");
+			plot = iter.next();
+			
+			if(plot.length() > 0)
+			arrayString = plot.split(",");
+			
 			currentWinner = arrayString[10];
+			//currentWinnerId = arrayString[7];
+			
+			currentLoser = arrayString[20];
+		    //currentLoserId = arrayString[17];
+		    
 			currentTournament = arrayString[1];
 			currentDate = processDate(arrayString[5]);
+			currentCategory = arrayString[4];
+		    currentRound = arrayString[29];
 			
-			System.out.println(iter.next());
+			//System.out.println(plot);
 			
-			//if is a Masters Series / Masters 1000 tournament
-			if(currentTournament.contains("Masters") && currentTournament.length() > 9 && currentRound.equals("F")) {
-			if(!listWinner.contains(currentWinner))
+		    //if((!winners.contains(currentWinner)) && currentCategory.equals("G") && currentRound.equals("QF"))
+			if((!winners.contains(currentWinner) && !winners.contains(currentLoser)) && (currentCategory.equals("F") && currentRound.equals("SF")))
 			{
 				
 			for (Iterator<String> iter2 = line2.listIterator(i); iter2.hasNext();) 
 			{
-				arrayString2 = iter2.next().split(",");
-				winner = arrayString2[10];
-				tournament = arrayString2[1];
-				date = arrayString2[5];
-				round = arrayString2[29];
+				plot = iter2.next();
+				if(plot.length() >0)
+				arrayString2 = plot.split(",");
+				//System.out.println(plot);
 				
-				if(currentWinner.equals(winner) && tournament.contains("Masters") && currentTournament.equals(tournament) && tournament.length() > 9 && round.equals("F")) 
+				winner = arrayString2[10];
+				//winnerId = arrayString2[7];
+				
+				loser = arrayString2[20];
+				//loserId = arrayString2[17];
+				
+				round = arrayString2[29];
+				category = arrayString2[4];
+				tournament = arrayString2[1];
+				
+				if((currentWinner.equals(winner) || currentWinner.equals(loser)) && (category.equals("F") && round.equals("SF")))
 			    {
-					currentWrite = currentWinner +", " + currentTournament +", " + currentDate +", " +tournament +", " + processDate(arrayString2[5]);
-				}
-			
+				 currentWrite = currentWinner +", " + currentTournament +", " + currentDate +", " +tournament +", " + processDate(arrayString2[5]);
+				 System.out.println("Add winner: "+currentWinner +i);
+				 winners.add(currentWinner);
+			    }
+				
+				if((currentLoser.equals(winner) || currentLoser.equals(loser)) && (category.equals("F") && round.equals("SF")))
+			    {
+				 currentWrite = currentLoser +", " + currentTournament +", " + currentDate +", " +tournament +", " + processDate(arrayString2[5]);
+				 System.out.println("Add loser: "+currentLoser +i);
+				 winners.add(currentLoser);
+			    }
+				
 					
 			}
+		
+			System.out.println(currentWrite);
 			w.write(currentWrite + "\n");
 			w.flush();
-			listWinner.add(currentWinner);
 			
+
 			}
-			
-			
 			}
 
 			i++;
 		}
-	}
 
 	//Script to search che biggest timespan between the same H2H
 	private static void searchH2H() throws IOException, RowsExceededException, WriteException, ParseException {
         int i = 0;
 		
-		for (Iterator<String> iter = line1.iterator(); iter.hasNext();) 
+		for (Iterator<String> iter = line1.listIterator(i); iter.hasNext();) 
 		{
-			arrayString = iter.next().split(",");
+			plot = iter.next();
+			arrayString = plot.split(",");
 			currentH2H = arrayString[10] +arrayString[20];
 			currentH2H2 = arrayString[20] +arrayString[10];
 			
-			//System.out.println(iter.next());
+			System.out.println(plot);
 			
 			if(!listWinner.contains(currentH2H) && !listWinner.contains(currentH2H2))
 			{
